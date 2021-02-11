@@ -18,8 +18,12 @@ Then you can run these:
 - npm run web
 ```
 
+# State 
+Stores the player, money and portfolioValue. Uses `react-redux` is located in the `/state` directory.
+
 # TODO
-[] Get the react native project running with hello world
+[x] Get the react native project running with hello world
 [] Get react-redux working
 [] Store money and portfolioValue inside state
 [] Display money on a single tab
+[] Add redux-persist to the project saving state between app launches
