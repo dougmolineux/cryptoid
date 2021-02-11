@@ -1,6 +1,9 @@
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { rootReducer } from './reducers';
+import { combineReducers } from 'redux';
+import { AppState } from './types';
 
-const middleware = applyMiddleware(thunk);
-export const store = createStore(rootReducer, middleware);
+export default store.create(
+    combineReducers<AppState>(
+        userList,   // this is the user-list reducer
+        // other sub-states reducers go here
+    )
+)

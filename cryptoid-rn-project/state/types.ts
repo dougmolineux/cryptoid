@@ -1,6 +1,6 @@
 export type Player = {
-    money: string;
-    portfolioValue: string;
+    money: number;
+    portfolioValue: number;
 }
 
 export type UserListState = Player[];
@@ -19,5 +19,5 @@ export type UserListAction = AddUserAction | UpdateUserAction;
 
 export type AppState = {
     userList: UserListState,
-    // add future state slices here
+    player: Player
 }
