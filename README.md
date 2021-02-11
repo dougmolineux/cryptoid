@@ -32,4 +32,14 @@ Stores the player, money and portfolioValue. Uses `react-redux` is located in th
 
 [] Add redux-persist to the project saving state between app launches
 
-[] Update Tab One Title to be Cryptoid
+[x] Update Tab One Title to be Cryptoid
+
+[] Add buy sell buttons to crypto prices tab
+
+[] Create buy / sell view (with slider, confirm, cancel button)
+
+[] Update so that buy / sell modifies player money and portfolio value
+
+[] Randomize Crypto prices (by a random percentage)
+
+[] Add Next button to the Player information tab
