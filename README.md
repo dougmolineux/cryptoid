@@ -23,7 +23,8 @@ Stores the player, money and portfolioValue. Uses `react-redux` is located in th
 
 # TODO
 [x] Get the react native project running with hello world
-[] Get react-redux working
+[] Get react-redux working (partially done)
 [] Store money and portfolioValue inside state
 [] Display money on a single tab
 [] Add redux-persist to the project saving state between app launches
+[] Update Tab One Title to be Cryptoid
