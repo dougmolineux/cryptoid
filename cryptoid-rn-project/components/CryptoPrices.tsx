@@ -6,25 +6,31 @@ import Colors from '../constants/Colors';
 import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 
-export default function PlayerInfo({ path }: { path: string }) {
-  const playerMoney = 100;
-  const portfolioValue = 0;
+export default function EditScreenInfo({ path }: { path: string }) {
   return (
     <View>
       <View style={styles.getStartedContainer}>
         <Text
-          style={styles.getStartedText}
+          style={styles.cryptoText}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
-          Player Money: ${playerMoney}
+          RabbitCoin - $10
         </Text>
         <Text
-          style={styles.getStartedText}
+          style={styles.cryptoText}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
-          Portfolio Value: ${portfolioValue}
+          MTC - $50
         </Text>
+        <Text
+          style={styles.cryptoText}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)">
+          Spider - $560
+        </Text>
+
       </View>
+
     </View>
   );
 }
@@ -33,6 +39,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -69,9 +80,9 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     paddingHorizontal: 4,
   },
-  getStartedText: {
-    fontSize: 17,
-    lineHeight: 24,
+  cryptoText: {
+    fontSize: 27,
+    lineHeight: 50,
     textAlign: 'center',
   },
   helpContainer: {

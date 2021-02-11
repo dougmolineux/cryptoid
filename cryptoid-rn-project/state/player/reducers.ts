@@ -8,16 +8,22 @@ export const initialState: AppState = {
     }
 };
 
-const playerReducer = (
+export const playerReducer = (
     state: AppState = initialState,
     action: PlayerActions
 ) => {
     switch (action.type){
         case PLAYER_ACTION_TYPES.UPDATE_USER:
             // pay attention to type-casting on action
-            const { money, portfolioValue } = <UpdatePlayerAction>action;
+            const updatePlayerAction = <UpdatePlayerAction>action;
             // return [...state, { money, portfolioValue }];
-            return state;
+            // state.
+            console.log("state", state);
+            console.log("updatePlayerAction", updatePlayerAction);
+            
+            return { 
+                ...state,     
+            };
             
             // define rest of actions here
         default:

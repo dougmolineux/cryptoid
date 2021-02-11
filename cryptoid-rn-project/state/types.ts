@@ -5,8 +5,7 @@ export type Player = {
 
 export type UpdatePlayerAction = {
     type: string,
-    money: number;
-    portfolioValue: Player;
+    userData: Player
 }
 
 // export type UpdateUserAction = {

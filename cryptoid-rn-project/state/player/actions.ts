@@ -1,4 +1,4 @@
-import { AddUserAction } from "../types";
+import { UpdatePlayerAction } from "../types";
 
 export enum PLAYER_ACTION_TYPES {
     UPDATE_USER = 'PLAYER/UPDATE_PLAYER'
