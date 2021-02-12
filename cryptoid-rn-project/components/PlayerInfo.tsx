@@ -26,7 +26,6 @@ let PlayerInfo: React.FC<Props> = ({ player }) => {
   console.log('appState', appState);
   console.log('player', player);
   
-  const playerMoney = 100;
   const portfolioValue = 0;
   return (
     <View>
@@ -36,7 +35,7 @@ let PlayerInfo: React.FC<Props> = ({ player }) => {
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
           Player Money
-          ${playerMoney}
+          ${player.money}
         </Text>
         <Text
           style={styles.playerInfoText}
