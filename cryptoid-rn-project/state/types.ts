@@ -20,3 +20,5 @@ export type PlayerActions = UpdatePlayerAction;
 export type AppState = {
     player: Player
 }
+
+export type DispatchType = (args: PlayerActions) => PlayerActions

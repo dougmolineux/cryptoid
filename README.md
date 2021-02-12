@@ -34,12 +34,20 @@ Stores the player, money and portfolioValue. Uses `react-redux` is located in th
 
 [x] Update Tab One Title to be Cryptoid
 
-[] Add buy sell buttons to crypto prices tab
+[x] Add buy sell buttons to crypto prices tab
 
-[] Create buy / sell view (with slider, confirm, cancel button)
+[x] Create buy / sell view (with slider, confirm, cancel button)
 
 [] Update so that buy / sell modifies player money and portfolio value
 
 [] Randomize Crypto prices (by a random percentage)
 
-[] Add Next button to the Player information tab
+[x] Add Next button to the Player information tab
+
+[] Make background color of everythgin to #ffedb3
+
+[] Add to state player stock information (price bought at, total shares)
+
+[] Turn minimumTrackTintColor inside cryptoid-rn-project/components/CryptoPrices.tsx into a variable
+
+[] Get new lines between Player money and money value

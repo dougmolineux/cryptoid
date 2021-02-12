@@ -3,7 +3,7 @@ import { PLAYER_ACTION_TYPES } from "./actions";
 
 export const initialState: AppState = {
     player: { 
-        money: 100, 
+        money: 150, 
         portfolioValue: 0 
     }
 };
