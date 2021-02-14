@@ -1,5 +1,5 @@
 // import * as WebBrowser from 'expo-web-browser';
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 // import Colors from '../constants/Colors';
@@ -28,16 +28,33 @@ let EditScreenInfo: React.FC<Props> = ({ player }) => {
 
   const buyStock = (stock, i) => {
     // TODO: buy the stock
-    console.log(stock);
-    showSlider[i] = 'flex';
+    console.log("buying stock", stock);
+    console.log("buying stock i ", i);
+    // showSlider[i] = 'flex';
     // forceUpdate();
+    setStockIndex(i);
   };
+
+  const confirmBuyStock = () => {
+    console.log("confirm buying stock");
+    // showSlider[i] = 'flex';
+    // forceUpdate();
+    // setStockIndex(i);
+  };
+
+  const cancelBuyStock = () => {
+    console.log("confirm buying stock");
+    // showSlider[i] = 'flex';
+    // forceUpdate();
+    // setStockIndex(i);
+    setStockIndex('list');
+  };
+
+  const [stockIndex, setStockIndex] = useState('list');
 
   // const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const showSlider = {};
-
-  console.log('how often does this run?');
 
   const stockOutput = stocks.map( (stock, i) => {
     return (
@@ -71,11 +88,61 @@ let EditScreenInfo: React.FC<Props> = ({ player }) => {
     </View>)
   });
 
-  return (
+  const stockList = (
     <View>
       {stockOutput}
     </View>
   );
+
+  let output;
+
+  if(stockIndex !== 'list') {
+    output = (
+    <View>
+      <Text
+        style={styles.cryptoText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)">        
+        {stocks[stockIndex].name}
+      </Text>
+      <Text
+        style={styles.cryptoText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)">        
+        Price per Crypto: ${stocks[stockIndex].price}
+      </Text>
+      <Text
+        style={styles.cryptoText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)">        
+        Available Cash: ${player.money}
+      </Text>
+      <Slider
+          style={{width: 200, height: 40}}
+          minimumValue={0}
+          maximumValue={10}
+          minimumTrackTintColor="#ccfffa"
+          maximumTrackTintColor="#ffeae6"
+        />
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity 
+          style={styles.buyButtonContainer}
+          onPress={ () => confirmBuyStock() }>
+          <Text style={styles.appButtonText}>Confirm</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.sellButtonContainer}
+          onPress={ () => cancelBuyStock() }>
+          <Text style={styles.appButtonText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+    );
+  } else {
+    output = stockList;
+  }  
+
+  return output;
 
 }
 
@@ -107,48 +174,15 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30,
   },
-  // welcomeContainer: {
-  //   alignItems: 'center',
-  //   marginTop: 10,
-  //   marginBottom: 20,
-  // },
-  // welcomeImage: {
-  //   width: 100,
-  //   height: 80,
-  //   resizeMode: 'contain',
-  //   marginTop: 3,
-  //   marginLeft: -10,
-  // },
   getStartedContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
   },
-  // homeScreenFilename: {
-  //   marginVertical: 7,
-  // },
-  // codeHighlightText: {
-  //   color: 'rgba(96,100,109, 0.8)',
-  // },
-  // codeHighlightContainer: {
-  //   borderRadius: 3,
-  //   paddingHorizontal: 4,
-  // },
   cryptoText: {
     fontSize: 27,
     lineHeight: 50,
     textAlign: 'center',
   },
-  // helpContainer: {
-  //   marginTop: 15,
-  //   marginHorizontal: 20,
-  //   alignItems: 'center',
-  // },
-  // helpLink: {
-  //   paddingVertical: 15,
-  // },
-  // helpLinkText: {
-  //   textAlign: 'center',
-  // },
   buyButtonContainer: {
     elevation: 8,
     backgroundColor: "#009688",
