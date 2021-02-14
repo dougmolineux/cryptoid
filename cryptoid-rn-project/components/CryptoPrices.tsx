@@ -1,5 +1,5 @@
 // import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { useReducer } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 // import Colors from '../constants/Colors';
@@ -26,15 +26,23 @@ let EditScreenInfo: React.FC<Props> = ({ player }) => {
     price: 60
   }];
 
-  const buyStock = (stock) => {
+  const buyStock = (stock, i) => {
     // TODO: buy the stock
     console.log(stock);
+    showSlider[i] = 'flex';
+    // forceUpdate();
   };
 
-  const stockOutput = stocks.map( (stock) => {
+  // const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  const showSlider = {};
+
+  console.log('how often does this run?');
+
+  const stockOutput = stocks.map( (stock, i) => {
     return (
       <View style={styles.getStartedContainer}
-        key={stock.name}>
+        key={i}>
       <Text
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
@@ -44,14 +52,14 @@ let EditScreenInfo: React.FC<Props> = ({ player }) => {
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity 
           style={styles.buyButtonContainer}
-          onPress={ () => buyStock(stock) }>
+          onPress={ () => buyStock(stock, i) }>
           <Text style={styles.appButtonText}>Buy</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.sellButtonContainer}>
           <Text style={styles.appButtonText}>Sell</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ display: 'flex' }}>
+      <View style={{ display: showSlider[i] || 'none' }}>
         <Slider
           style={{width: 200, height: 40}}
           minimumValue={0}
@@ -69,81 +77,6 @@ let EditScreenInfo: React.FC<Props> = ({ player }) => {
     </View>
   );
 
-  // {/* <View style={styles.getStartedContainer}>
-  //   <Text
-  //     style={styles.cryptoText}
-  //     lightColor="rgba(0,0,0,0.8)"
-  //     darkColor="rgba(255,255,255,0.8)">
-  //     RabbitCoin - $10
-  //   </Text>
-  //   {/* <TouchableOpacity onPress={onPress} style={styles.buyButtonContainer}>
-  //     <Text style={styles.appButtonText}>{title}</Text>
-  //   </TouchableOpacity> */}
-  //   <View style={{ flexDirection: 'row' }}>
-  //     <TouchableOpacity 
-  //       style={styles.buyButtonContainer}>
-  //       <Text style={styles.appButtonText}>Buy</Text>
-  //     </TouchableOpacity>
-  //     <TouchableOpacity style={styles.sellButtonContainer}>
-  //       <Text style={styles.appButtonText}>Sell</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  //   <View style={{ display: 'flex' }}>
-  //     <Slider
-  //       style={{width: 200, height: 40}}
-  //       minimumValue={0}
-  //       maximumValue={10}
-  //       minimumTrackTintColor="#ccfffa"
-  //       maximumTrackTintColor="#ffeae6"
-  //     />
-  //   </View>
-  //   <Text
-  //     style={styles.cryptoText}
-  //     lightColor="rgba(0,0,0,0.8)"
-  //     darkColor="rgba(255,255,255,0.8)">
-  //     MTC - $50
-  //   </Text>
-  //   <View style={{ flexDirection: 'row' }}>
-  //     <TouchableOpacity style={styles.buyButtonContainer}>
-  //       <Text style={styles.appButtonText}>Buy</Text>
-  //     </TouchableOpacity>
-  //     <TouchableOpacity style={styles.sellButtonContainer}>
-  //       <Text style={styles.appButtonText}>Sell</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  //   <View style={{ display: 'flex' }}>
-  //     <Slider
-  //       style={{width: 200, height: 40}}
-  //       minimumValue={0}
-  //       maximumValue={10}
-  //       minimumTrackTintColor="#ccfffa"
-  //       maximumTrackTintColor="#ffeae6"
-  //     />
-  //   </View>
-  //   <Text
-  //     style={styles.cryptoText}
-  //     lightColor="rgba(0,0,0,0.8)"
-  //     darkColor="rgba(255,255,255,0.8)">
-  //     Spider - $560
-  //   </Text>
-  //   <View style={{ flexDirection: 'row' }}>
-  //     <TouchableOpacity style={styles.buyButtonContainer}>
-  //       <Text style={styles.appButtonText}>Buy</Text>
-  //     </TouchableOpacity>
-  //     <TouchableOpacity style={styles.sellButtonContainer}>
-  //       <Text style={styles.appButtonText}>Sell</Text>
-  //     </TouchableOpacity>
-  //   </View>
-  //   <View style={{ display: 'flex' }}>
-  //     <Slider
-  //       style={{width: 200, height: 40}}
-  //       minimumValue={0}
-  //       maximumValue={10}
-  //       minimumTrackTintColor="#ccfffa"
-  //       maximumTrackTintColor="#ffeae6"
-  //     />
-  //   </View>
-  // </View> */}
 }
 
 const mapStateToProps = (state: AppState) => {
