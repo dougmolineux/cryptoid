@@ -1,32 +1,49 @@
-// import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { DrawerLayoutAndroid, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 
-// import Colors from '../constants/Colors';
+import { incrementDay } from '../state/player/actions';
 import { AppState, Player } from '../state/types';
-// import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 
 type Props = {
+  // state: AppState
   player: Player,
-}
-
-const mapStateToProps = (state: AppState) => {
-  console.log('whats the state', state);
-  return { player: state.player };
+  day: number,
+  incrementDayDispatch: (day: number) => void;
 }
 
 // export default function PlayerInfo({ path }: { path: string }) {
-let PlayerInfo: React.FC<Props> = ({ player }) => {
+let PlayerInfo: React.FC<Props> = ({ player, day, incrementDayDispatch }) => {
+  
 
   // export const Article: React.FC<Props> = ({ article, removeArticle }) => {
-  const appState = React.useState<AppState | {}>();
+  // const appState = React.useState<AppState | {}>();
+  // console.log('appState', appState);
 
-  console.log('appState', appState);
-  console.log('player', player);
+  // console.log('player', player);
+  // player = player.player;
+
+  // const { day } = day;
+  //console.log('day', day);
+  // let day = 1;
+  // let player = {
+  //   money: 10,
+  //   portfolioValue: 20
+  // }
   
-  const portfolioValue = 0;
+  // const { player, day } = state;
+  // console.log('store.getState', store.getState());
+  console.log('player', player);
+  console.log('day', day);
+
+  const nextButtonPressed = () => {
+    day++;
+    console.log('next day', day);
+    incrementDayDispatch(day);
+  };
+  
   return (
     <View>
       <View style={styles.getStartedContainer}>
@@ -42,9 +59,17 @@ let PlayerInfo: React.FC<Props> = ({ player }) => {
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
           Portfolio Value
-          ${portfolioValue}
+          ${player.portfolioValue}
         </Text>
-        <TouchableOpacity style={styles.nextButtonContainer}>
+        <Text
+          style={styles.playerInfoText}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)">
+          Day {day}
+        </Text>
+        <TouchableOpacity 
+          style={styles.nextButtonContainer}
+          onPress={nextButtonPressed}>
           <Text style={styles.appButtonText}>Next</Text>
         </TouchableOpacity>
       </View>
@@ -52,10 +77,24 @@ let PlayerInfo: React.FC<Props> = ({ player }) => {
   );
 }
 
-// export default PlayerInfo;
+const mapDipatchToProps = (dispatch: Dispatch) => ({
+  incrementDayDispatch: (day: number) => {
+    console.log('is this triggering?', day);
+    dispatch(incrementDay(day));
+  },
+});
+
+const mapStateToProps = (state: AppState) => {
+  console.log('whats the state', state);
+  return {
+    player: state.player,
+    day: state.day
+  };
+}
 
 export default PlayerInfo = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDipatchToProps
 )(PlayerInfo);
 
 const styles = StyleSheet.create({
@@ -63,41 +102,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
   contentContainer: {
     paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
   },
   getStartedContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
   },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
+  // homeScreenFilename: {
+  //   marginVertical: 7,
+  // },
+  // codeHighlightText: {
+  //   color: 'rgba(96,100,109, 0.8)',
+  // },
+  // codeHighlightContainer: {
+  //   borderRadius: 3,
+  //   paddingHorizontal: 4,
+  // },
   playerInfoText: {
     fontSize: 27,
     lineHeight: 50,

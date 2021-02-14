@@ -10,7 +10,8 @@ import thunk from "redux-thunk"
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
-import { playerReducer } from './state/player/reducers';
+import { appStateReducer } from './state/player/reducers';
+// import { rootReducer } from './state/store';
 
 // import { updatePlayer } from './state/player/actions';
 // import { DispatchType, Player, PlayerActions } from './state/types';
@@ -22,14 +23,13 @@ import { playerReducer } from './state/player/reducers';
 
 // const store = createStore(playerReducer, applyMiddleware(thunk));
 
-const store = createStore(playerReducer);
+const store = createStore(appStateReducer);
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
   
   console.log('store.getState', store.getState());
-  
 
   if (!isLoadingComplete) {
     return null;

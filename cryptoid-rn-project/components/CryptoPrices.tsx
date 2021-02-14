@@ -25,9 +25,12 @@ let EditScreenInfo: React.FC<Props> = ({ player }) => {
     name: 'Spyder',
     price: 60
   }];
+
   const buyStock = (stock) => {
-    console.log(stock)
+    // TODO: buy the stock
+    console.log(stock);
   };
+
   const stockOutput = stocks.map( (stock) => {
     return (
       <View style={styles.getStartedContainer}

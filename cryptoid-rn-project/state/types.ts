@@ -4,21 +4,20 @@ export type Player = {
 }
 
 export type UpdatePlayerAction = {
-    type: string,
+    type: string
     userData: Player
 }
 
-// export type UpdateUserAction = {
-//     type: string;
-//     index: number;
-//     userData: Player;
-// }
-
-// export type UserListAction = UpdatePlayer | UpdateUserAction;
-export type PlayerActions = UpdatePlayerAction;
-
-export type AppState = {
-    player: Player
+export type IncrementDayAction = {
+    type: string
+    dayValue: number
 }
 
-export type DispatchType = (args: PlayerActions) => PlayerActions
+export type StateActions = UpdatePlayerAction | IncrementDayAction;
+
+export type AppState = {
+    day: number;
+    player: Player;
+}
+
+export type DispatchType = (args: StateActions) => StateActions;
