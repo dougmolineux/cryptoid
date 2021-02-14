@@ -1,5 +1,5 @@
 import React from 'react';
-import { DrawerLayoutAndroid, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -77,7 +77,7 @@ let PlayerInfo: React.FC<Props> = ({ player, day, incrementDayDispatch }) => {
   );
 }
 
-const mapDipatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   incrementDayDispatch: (day: number) => {
     console.log('is this triggering?', day);
     dispatch(incrementDay(day));
@@ -94,7 +94,7 @@ const mapStateToProps = (state: AppState) => {
 
 export default PlayerInfo = connect(
   mapStateToProps,
-  mapDipatchToProps
+  mapDispatchToProps
 )(PlayerInfo);
 
 const styles = StyleSheet.create({

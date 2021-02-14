@@ -1,5 +1,5 @@
 // import * as WebBrowser from 'expo-web-browser';
-import React, { useReducer, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 // import Colors from '../constants/Colors';
@@ -8,13 +8,16 @@ import Slider from '@react-native-community/slider';
 import { Text, View } from './Themed';
 import { AppState, Player } from '../state/types';
 import { connect } from 'react-redux';
+import { updatePlayer } from '../state/player/actions';
+import { Dispatch } from 'redux';
 
 type Props = {
   player: Player,
+  updatePlayerDispatch: (money: number, portfolioValue) => void;
 }
 
 // export default function EditScreenInfo({ path }: { path: string }) {
-let EditScreenInfo: React.FC<Props> = ({ player }) => {
+let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
   const stocks = [{
     name: 'RabbitCoin',
     price: 10
@@ -98,7 +101,7 @@ let EditScreenInfo: React.FC<Props> = ({ player }) => {
 
   if(stockIndex !== 'list') {
     output = (
-    <View>
+    <View style={{ alignItems: 'center' }}>
       <Text
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
@@ -151,8 +154,17 @@ const mapStateToProps = (state: AppState) => {
   return { player: state.player };
 }
 
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  updatePlayerDispatch: (money: number, portfolioValio: number) => {
+    console.log('is this triggering?', money);
+    console.log('is this triggering?', portfolioValio);
+    dispatch(updatePlayer(money, portfolioValio));
+  },
+});
+
 export default EditScreenInfo = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(EditScreenInfo);
 
 const styles = StyleSheet.create({
