@@ -5,12 +5,14 @@ export enum PLAYER_ACTION_TYPES {
     INCREMENT_DAY = 'INCREMENT_DAY'
 }
 
-export const updatePlayer = (money: number, portfolioValue: number): UpdatePlayerAction => ({
+export const updatePlayer = (money: number, portfolioValue: number, stockIndex: number, purchaseAmount: number): UpdatePlayerAction => ({
     type: PLAYER_ACTION_TYPES.UPDATE_USER,
     userData: {
         money,
         portfolioValue
-    }
+    },
+    stockIndex,
+    purchaseAmount
 });
 
 export const incrementDay = (day: number): IncrementDayAction => ({

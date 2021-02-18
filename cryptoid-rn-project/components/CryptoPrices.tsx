@@ -6,28 +6,29 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 // import { MonoText } from './StyledText';
 import Slider from '@react-native-community/slider';
 import { Text, View } from './Themed';
-import { AppState, Player } from '../state/types';
+import { AppState, Player, Stock } from '../state/types';
 import { connect } from 'react-redux';
 import { updatePlayer } from '../state/player/actions';
 import { Dispatch } from 'redux';
 
 type Props = {
   player: Player,
-  updatePlayerDispatch: (money: number, portfolioValue) => void;
+  stocks: Stock[],
+  updatePlayerDispatch: (money: number, portfolioValue: number, stockIndex:number, purchaseAmount: number) => void;
 }
 
 // export default function EditScreenInfo({ path }: { path: string }) {
-let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
-  const stocks = [{
-    name: 'RabbitCoin',
-    price: 10
-  },{
-    name: 'MTC',
-    price: 20
-  },{
-    name: 'Spyder',
-    price: 60
-  }];
+let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch }) => {
+  // const stocks = [{
+  //   name: 'RabbitCoin',
+  //   price: 10
+  // },{
+  //   name: 'MTC',
+  //   price: 20
+  // },{
+  //   name: 'Spyder',
+  //   price: 60
+  // }];
 
   const buyStock = (stock, i) => {
     // TODO: buy the stock
@@ -38,26 +39,23 @@ let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
     setStockIndex(i);
   };
 
-  const confirmBuyStock = () => {
-    console.log("confirm buying stock");
-    // showSlider[i] = 'flex';
-    // forceUpdate();
-    // setStockIndex(i);
+  const confirmBuyStock = (stock, stockIndex) => {
+    console.log("confirm buying stock", stock);
+    console.log("confirm buying stock purchase amount", purchaseAmount);
+    let newPlayerMoney = player.money - purchaseAmount;
+    let newPortfolioAmount = player.portfolioValue + purchaseAmount;
+    let coinAmount = purchaseAmount / stock.price; 
+    updatePlayerDispatch(newPlayerMoney, newPortfolioAmount, stockIndex, coinAmount);
   };
 
   const cancelBuyStock = () => {
     console.log("confirm buying stock");
-    // showSlider[i] = 'flex';
-    // forceUpdate();
-    // setStockIndex(i);
     setStockIndex('list');
   };
 
   const [stockIndex, setStockIndex] = useState('list');
 
-  // const [, forceUpdate] = useReducer(x => x + 1, 0);
-
-  const showSlider = {};
+  // const showSlider = {};
 
   const stockOutput = stocks.map( (stock, i) => {
     return (
@@ -67,7 +65,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
         darkColor="rgba(255,255,255,0.8)">
-        {stock.name} - ${stock.price}
+        {stock.name} - ${stock.price} - Change: {stock.lastChanged}%
       </Text>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity 
@@ -79,7 +77,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
           <Text style={styles.appButtonText}>Sell</Text>
         </TouchableOpacity>
       </View>
-      <View style={{ display: showSlider[i] || 'none' }}>
+      {/* <View style={{ display: showSlider[i] || 'none' }}>
         <Slider
           style={{width: 200, height: 40}}
           minimumValue={0}
@@ -87,7 +85,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
           minimumTrackTintColor="#ccfffa"
           maximumTrackTintColor="#ffeae6"
         />
-      </View>
+      </View> */}
     </View>)
   });
 
@@ -98,6 +96,13 @@ let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
   );
 
   let output;
+  // let purchaseAmount = 0;
+
+  const [purchaseAmount, setPurchaseAmount] = useState(0);
+
+  const sliderChanged = (val) => {
+    setPurchaseAmount(val);
+  }
 
   if(stockIndex !== 'list') {
     output = (
@@ -120,17 +125,24 @@ let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
         darkColor="rgba(255,255,255,0.8)">        
         Available Cash: ${player.money}
       </Text>
+      <Text
+        style={styles.cryptoText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)">        
+        Purchase Amount: ${purchaseAmount}
+      </Text>
       <Slider
           style={{width: 200, height: 40}}
           minimumValue={0}
-          maximumValue={10}
+          maximumValue={player.money || 1}
           minimumTrackTintColor="#ccfffa"
           maximumTrackTintColor="#ffeae6"
+          onValueChange={ (val) => sliderChanged(val)}
         />
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity 
           style={styles.buyButtonContainer}
-          onPress={ () => confirmBuyStock() }>
+          onPress={ () => confirmBuyStock(stocks[stockIndex], stockIndex) }>
           <Text style={styles.appButtonText}>Confirm</Text>
         </TouchableOpacity>
         <TouchableOpacity 
@@ -151,14 +163,17 @@ let EditScreenInfo: React.FC<Props> = ({ player, updatePlayerDispatch }) => {
 
 const mapStateToProps = (state: AppState) => {
   console.log('whats the state', state);
-  return { player: state.player };
+  return { 
+    player: state.player, 
+    stocks: state.stocks 
+  };
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  updatePlayerDispatch: (money: number, portfolioValio: number) => {
+  updatePlayerDispatch: (money: number, portfolioValio: number, stockIndex: number, purchaseAmount: number) => {
     console.log('is this triggering?', money);
     console.log('is this triggering?', portfolioValio);
-    dispatch(updatePlayer(money, portfolioValio));
+    dispatch(updatePlayer(money, portfolioValio, stockIndex, purchaseAmount));
   },
 });
 
