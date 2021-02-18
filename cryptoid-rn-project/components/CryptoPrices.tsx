@@ -19,23 +19,10 @@ type Props = {
 
 // export default function EditScreenInfo({ path }: { path: string }) {
 let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch }) => {
-  // const stocks = [{
-  //   name: 'RabbitCoin',
-  //   price: 10
-  // },{
-  //   name: 'MTC',
-  //   price: 20
-  // },{
-  //   name: 'Spyder',
-  //   price: 60
-  // }];
 
   const buyStock = (stock, i) => {
-    // TODO: buy the stock
     console.log("buying stock", stock);
     console.log("buying stock i ", i);
-    // showSlider[i] = 'flex';
-    // forceUpdate();
     setStockIndex(i);
   };
 
@@ -46,6 +33,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
     let newPortfolioAmount = player.portfolioValue + purchaseAmount;
     let coinAmount = purchaseAmount / stock.price; 
     updatePlayerDispatch(newPlayerMoney, newPortfolioAmount, stockIndex, coinAmount);
+    setStockIndex('list');
   };
 
   const cancelBuyStock = () => {
@@ -54,10 +42,20 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
   };
 
   const [stockIndex, setStockIndex] = useState('list');
-
-  // const showSlider = {};
+  const [purchaseAmount, setPurchaseAmount] = useState(0);
 
   const stockOutput = stocks.map( (stock, i) => {
+    let lastChanged;
+    if(stock.lastChanged) {
+      lastChanged = (<Text style={{ flexDirection: 'row' }}> 
+        <View style={ 
+          stock.lastChanged < 0 ? styles.downTriangle : styles.upTriangle 
+        }></View>
+        <View style={{ padding: '4px' }}> {stock.lastChanged}%</View>
+      </Text>);
+    }
+    const buyButtonStyle = player.money > stock.price ? 
+      styles.buyButtonContainer : styles.disabledBuyButtonContainer;
     return (
       <View style={styles.getStartedContainer}
         key={i}>
@@ -65,11 +63,12 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
         darkColor="rgba(255,255,255,0.8)">
-        {stock.name} - ${stock.price} - Change: {stock.lastChanged}%
+        {stock.name} - ${stock.price} {lastChanged}
       </Text>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity 
-          style={styles.buyButtonContainer}
+          style={ buyButtonStyle }
+          disabled={ player.money < stock.price }
           onPress={ () => buyStock(stock, i) }>
           <Text style={styles.appButtonText}>Buy</Text>
         </TouchableOpacity>
@@ -77,15 +76,6 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
           <Text style={styles.appButtonText}>Sell</Text>
         </TouchableOpacity>
       </View>
-      {/* <View style={{ display: showSlider[i] || 'none' }}>
-        <Slider
-          style={{width: 200, height: 40}}
-          minimumValue={0}
-          maximumValue={10}
-          minimumTrackTintColor="#ccfffa"
-          maximumTrackTintColor="#ffeae6"
-        />
-      </View> */}
     </View>)
   });
 
@@ -98,7 +88,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
   let output;
   // let purchaseAmount = 0;
 
-  const [purchaseAmount, setPurchaseAmount] = useState(0);
+  // const [purchaseAmount, setPurchaseAmount] = useState(0);
 
   const sliderChanged = (val) => {
     setPurchaseAmount(val);
@@ -141,7 +131,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
         />
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity 
-          style={styles.buyButtonContainer}
+          style={ styles.buyButtonContainer }
           onPress={ () => confirmBuyStock(stocks[stockIndex], stockIndex) }>
           <Text style={styles.appButtonText}>Confirm</Text>
         </TouchableOpacity>
@@ -206,13 +196,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 50,
   },
   cryptoText: {
-    fontSize: 27,
+    fontSize: 14,
     lineHeight: 50,
     textAlign: 'center',
   },
   buyButtonContainer: {
     elevation: 8,
     backgroundColor: "#009688",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12
+  },
+  disabledBuyButtonContainer: {
+    elevation: 8,
+    backgroundColor: "#99fff5",
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 12
@@ -224,11 +221,46 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12
   },
+  disabledSellButtonContainer: {
+    elevation: 8,
+    backgroundColor: "#ffd5cc",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12
+  },
   appButtonText: {
     fontSize: 18,
     color: "#fff",
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase"
+  },
+  upTriangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderTopWidth: 0,
+    borderRightWidth: 6,
+    borderBottomWidth: 12,
+    borderLeftWidth: 6,
+    borderTopColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderBottomColor: '#009688',
+    borderLeftColor: 'transparent',
+  },
+  downTriangle: {
+    width: 0,
+    height: 0,
+    backgroundColor: 'transparent',
+    borderStyle: 'solid',
+    borderTopWidth: 12,
+    borderRightWidth: 6,
+    borderBottomWidth: 0,
+    borderLeftWidth: 6,
+    borderTopColor: '#FF9C87',
+    borderRightColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderLeftColor: 'transparent',
   }
 });
