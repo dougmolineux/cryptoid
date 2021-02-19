@@ -21,9 +21,15 @@ type Props = {
 let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch }) => {
 
   const buyStock = (stock, i) => {
-    console.log("buying stock", stock);
-    console.log("buying stock i ", i);
+    setMode('buy');
     setStockIndex(i);
+    setPurchaseAmount(0);
+  };
+
+  const sellStock = (stock, i) => {
+    setMode('sell');
+    setStockIndex(i);
+    setPurchaseAmount(0);
   };
 
   const confirmBuyStock = (stock, stockIndex) => {
@@ -36,6 +42,14 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
     setStockIndex('list');
   };
 
+  const confirmSellStock = (stock, stockIndex) => {
+    let newPlayerMoney = player.money + purchaseAmount;
+    let newPortfolioAmount = player.portfolioValue - purchaseAmount;
+    let coinAmount = purchaseAmount / stock.price; 
+    updatePlayerDispatch(newPlayerMoney, newPortfolioAmount, stockIndex, coinAmount*-1);
+    setStockIndex('list');
+  };
+
   const cancelBuyStock = () => {
     console.log("confirm buying stock");
     setStockIndex('list');
@@ -43,21 +57,22 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
 
   const [stockIndex, setStockIndex] = useState('list');
   const [purchaseAmount, setPurchaseAmount] = useState(0);
+  const [mode, setMode] = useState('none');
 
   const stockOutput = stocks.map( (stock, i) => {
     let lastChanged;
     if(stock.lastChanged) {
       lastChanged = (<Text style={{ flexDirection: 'row' }}> 
-        <View style={ 
+        <Text style={ 
           stock.lastChanged < 0 ? styles.downTriangle : styles.upTriangle 
-        }></View>
-        <View style={{ padding: '4px' }}> {stock.lastChanged}%</View>
+        }></Text>
+        <Text> {stock.lastChanged}%</Text>
       </Text>);
     }
     const buyButtonStyle = player.money > stock.price ? 
       styles.buyButtonContainer : styles.disabledBuyButtonContainer;
     return (
-      <View style={styles.getStartedContainer}
+      <View style={styles.stockListContainer}
         key={i}>
       <Text
         style={styles.cryptoText}
@@ -72,7 +87,9 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
           onPress={ () => buyStock(stock, i) }>
           <Text style={styles.appButtonText}>Buy</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.sellButtonContainer}>
+        <TouchableOpacity 
+          style={styles.sellButtonContainer}
+          onPress={ () => sellStock(stock, i) }>
           <Text style={styles.appButtonText}>Sell</Text>
         </TouchableOpacity>
       </View>
@@ -86,15 +103,17 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
   );
 
   let output;
-  // let purchaseAmount = 0;
-
-  // const [purchaseAmount, setPurchaseAmount] = useState(0);
 
   const sliderChanged = (val) => {
+    val = Number(val.toFixed(2));
     setPurchaseAmount(val);
   }
 
   if(stockIndex !== 'list') {
+    let maxSliderValue = player.money;
+    if(mode === 'sell') {
+      maxSliderValue = stocks[stockIndex].owned * stocks[stockIndex].price;
+    }
     output = (
     <View style={{ alignItems: 'center' }}>
       <Text
@@ -124,7 +143,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
       <Slider
           style={{width: 200, height: 40}}
           minimumValue={0}
-          maximumValue={player.money || 1}
+          maximumValue={maxSliderValue}
           minimumTrackTintColor="#ccfffa"
           maximumTrackTintColor="#ffeae6"
           onValueChange={ (val) => sliderChanged(val)}
@@ -132,7 +151,13 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity 
           style={ styles.buyButtonContainer }
-          onPress={ () => confirmBuyStock(stocks[stockIndex], stockIndex) }>
+          onPress={ () => {
+            if(mode === 'buy') {
+              confirmBuyStock(stocks[stockIndex], stockIndex);
+            } else {
+              confirmSellStock(stocks[stockIndex], stockIndex);
+            }
+          }}>
           <Text style={styles.appButtonText}>Confirm</Text>
         </TouchableOpacity>
         <TouchableOpacity 
@@ -182,16 +207,16 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  getStartedContainer: {
+  // developmentModeText: {
+  //   marginBottom: 20,
+  //   fontSize: 14,
+  //   lineHeight: 19,
+  //   textAlign: 'center',
+  // },
+  // contentContainer: {
+  //   paddingTop: 30,
+  // },
+  stockListContainer: {
     alignItems: 'center',
     marginHorizontal: 50,
   },

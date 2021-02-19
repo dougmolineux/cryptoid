@@ -17,24 +17,6 @@ type Props = {
 // export default function PlayerInfo({ path }: { path: string }) {
 let PlayerInfo: React.FC<Props> = ({ player, day, incrementDayDispatch }) => {
   
-
-  // export const Article: React.FC<Props> = ({ article, removeArticle }) => {
-  // const appState = React.useState<AppState | {}>();
-  // console.log('appState', appState);
-
-  // console.log('player', player);
-  // player = player.player;
-
-  // const { day } = day;
-  //console.log('day', day);
-  // let day = 1;
-  // let player = {
-  //   money: 10,
-  //   portfolioValue: 20
-  // }
-  
-  // const { player, day } = state;
-  // console.log('store.getState', store.getState());
   console.log('player', player);
   console.log('day', day);
 
@@ -52,14 +34,14 @@ let PlayerInfo: React.FC<Props> = ({ player, day, incrementDayDispatch }) => {
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
           Player Money
-          ${player.money}
+          ${player.money.toFixed(2)}
         </Text>
         <Text
           style={styles.playerInfoText}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
           Portfolio Value
-          ${player.portfolioValue}
+          ${player.portfolioValue.toFixed(2)}
         </Text>
         <Text
           style={styles.playerInfoText}
@@ -120,7 +102,7 @@ const styles = StyleSheet.create({
   //   paddingHorizontal: 4,
   // },
   playerInfoText: {
-    fontSize: 27,
+    fontSize: 24,
     lineHeight: 50,
     textAlign: 'center',
   },

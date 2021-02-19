@@ -74,14 +74,12 @@ export const appStateReducer = (
                 stocks: newStockArray
             };
         case PLAYER_ACTION_TYPES.UPDATE_USER:
-
-            // pay attention to type-casting on action
             const updatePlayerAction = <UpdatePlayerAction>action;
-            // return [...state, { money, portfolioValue }];
-            // state.
+
             console.log("state", state);
             console.log("updatePlayerAction", updatePlayerAction);
 
+            // if we are selling, then we need to minus this
             state.stocks[updatePlayerAction.stockIndex].owned = 
                 state.stocks[updatePlayerAction.stockIndex].owned + updatePlayerAction.purchaseAmount;
 
