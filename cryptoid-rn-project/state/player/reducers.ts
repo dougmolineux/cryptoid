@@ -42,25 +42,24 @@ export const appStateReducer = (
             const newStockArray = state.stocks.map( (stock) => {
                 let upOrDown = randomInteger(1, 10);
                 let percentChange = stock.price * (randomInteger(1, 20) / 100);
-                stock.lastChanged = Number(percentChange.toFixed(2));
                 console.log("upOrdDown", upOrDown);
                 
                 if(upOrDown > 3) {
-                    stock.price = Number((stock.price + percentChange).toFixed(2));
+                    stock.price = stock.price + percentChange;
                 } else {
                     stock.lastChanged = stock.lastChanged * -1;
-                    stock.price = Number((stock.price - percentChange).toFixed(2));
+                    stock.price = stock.price - percentChange;
                 }
-                playerPortfolioValue = playerPortfolioValue + (stock.price * Number(stock.owned.toFixed(2)));
-                playerPortfolioValue = Number(playerPortfolioValue.toFixed(2));
+                playerPortfolioValue = playerPortfolioValue + (stock.price * stock.owned);
+                playerPortfolioValue = playerPortfolioValue;
                 return stock;
             });
             
             console.log('new state', {
                 ...state,
                 player: {
-                    money: Number(state.player.money.toFixed(2)),
-                    portfolioValue: Number(playerPortfolioValue.toFixed(2))
+                    money: state.player.money,
+                    portfolioValue: playerPortfolioValue
                 },
                 day: incrementDay.dayValue,
                 stocks: newStockArray
@@ -69,8 +68,8 @@ export const appStateReducer = (
             return {
                 ...state,
                 player: {
-                    money: Number(state.player.money.toFixed(2)),
-                    portfolioValue: Number(playerPortfolioValue.toFixed(2))
+                    money: state.player.money,
+                    portfolioValue: playerPortfolioValue,
                 },
                 day: incrementDay.dayValue,
                 stocks: newStockArray
@@ -78,12 +77,8 @@ export const appStateReducer = (
         case PLAYER_ACTION_TYPES.UPDATE_USER:
             const updatePlayerAction = <UpdatePlayerAction>action;
 
-            console.log("state", state);
-            console.log("updatePlayerAction", updatePlayerAction);
-
-            // if we are selling, then we need to minus this
-            // the purchase amount is actually going to be negative
-            // if we are selling, so no changes here are required
+            // console.log("state", state);
+            // console.log("updatePlayerAction", updatePlayerAction);
 
             state.stocks[updatePlayerAction.stockIndex].owned = 
                 state.stocks[updatePlayerAction.stockIndex].owned + updatePlayerAction.purchaseAmount;

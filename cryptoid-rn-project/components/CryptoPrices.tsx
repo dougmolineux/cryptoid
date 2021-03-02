@@ -42,9 +42,14 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
   };
 
   const confirmSellStock = (stock, stockIndex) => {
+    console.log("confirm selling stock", stock);
+    console.log("confirm selling stock purchase amount", purchaseAmount);
     let newPlayerMoney = player.money + purchaseAmount;
     let newPortfolioAmount = player.portfolioValue - purchaseAmount;
     let coinAmount = purchaseAmount / stock.price; 
+    console.log("coinAmount", coinAmount);
+    console.log("typeof coinAmount", typeof coinAmount);
+
     updatePlayerDispatch(newPlayerMoney, newPortfolioAmount, stockIndex, coinAmount*-1);
     setStockIndex('list');
   };
@@ -107,7 +112,6 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
   let output;
 
   const sliderChanged = (val) => {
-    val = Number(val.toFixed(2));
     setPurchaseAmount(val);
   }
 
@@ -185,7 +189,6 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
 }
 
 const mapStateToProps = (state: AppState) => {
-  console.log('whats the state', state);
   return { 
     player: state.player, 
     stocks: state.stocks 

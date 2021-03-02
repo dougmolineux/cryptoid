@@ -67,7 +67,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 const mapStateToProps = (state: AppState) => {
-  console.log('whats the state', state);
   return {
     player: state.player,
     day: state.day
