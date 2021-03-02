@@ -17,7 +17,6 @@ type Props = {
   updatePlayerDispatch: (money: number, portfolioValue: number, stockIndex:number, purchaseAmount: number) => void;
 }
 
-// export default function EditScreenInfo({ path }: { path: string }) {
 let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch }) => {
 
   const buyStock = (stock, i) => {
@@ -71,6 +70,8 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
     }
     const buyButtonStyle = player.money > stock.price ? 
       styles.buyButtonContainer : styles.disabledBuyButtonContainer;
+    const sellButtonStyle = stock.owned <= 0 ? 
+      styles.disabledSellButtonContainer : styles.sellButtonContainer;
     return (
       <View style={styles.stockListContainer}
         key={i}>
@@ -88,7 +89,8 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
           <Text style={styles.appButtonText}>Buy</Text>
         </TouchableOpacity>
         <TouchableOpacity 
-          style={styles.sellButtonContainer}
+          style={ sellButtonStyle }
+          disabled={ stock.owned <= 0 }
           onPress={ () => sellStock(stock, i) }>
           <Text style={styles.appButtonText}>Sell</Text>
         </TouchableOpacity>
@@ -132,7 +134,13 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
         darkColor="rgba(255,255,255,0.8)">        
-        Available Cash: ${player.money}
+        Available Cash: ${player.money.toFixed(2)}
+      </Text>
+      <Text
+        style={styles.cryptoText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)">        
+        Currently Owned: ${stocks[stockIndex].owned}
       </Text>
       <Text
         style={styles.cryptoText}
@@ -186,8 +194,6 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   updatePlayerDispatch: (money: number, portfolioValio: number, stockIndex: number, purchaseAmount: number) => {
-    console.log('is this triggering?', money);
-    console.log('is this triggering?', portfolioValio);
     dispatch(updatePlayer(money, portfolioValio, stockIndex, purchaseAmount));
   },
 });
@@ -207,15 +213,6 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
-  // developmentModeText: {
-  //   marginBottom: 20,
-  //   fontSize: 14,
-  //   lineHeight: 19,
-  //   textAlign: 'center',
-  // },
-  // contentContainer: {
-  //   paddingTop: 30,
-  // },
   stockListContainer: {
     alignItems: 'center',
     marginHorizontal: 50,

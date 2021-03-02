@@ -40,10 +40,12 @@ export const appStateReducer = (
             
             let playerPortfolioValue = 0;
             const newStockArray = state.stocks.map( (stock) => {
-                let upOrDown = randomInteger(1, 2);
+                let upOrDown = randomInteger(1, 10);
                 let percentChange = stock.price * (randomInteger(1, 20) / 100);
                 stock.lastChanged = Number(percentChange.toFixed(2));
-                if(upOrDown === 1) {
+                console.log("upOrdDown", upOrDown);
+                
+                if(upOrDown > 3) {
                     stock.price = Number((stock.price + percentChange).toFixed(2));
                 } else {
                     stock.lastChanged = stock.lastChanged * -1;
