@@ -83,7 +83,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
         darkColor="rgba(255,255,255,0.8)">
-        {stock.name} - ${stock.price} {lastChanged}
+        {stock.name} ${stock.price.toFixed(2)} {lastChanged}
       </Text>
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity 
@@ -112,26 +112,17 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
 
   const onChangeText = (text, money) => {
     text = Number(text.replace(/[^0-9]/g, ''));
-    if(Number(text) <= money) {
+    if(text <= money) {
       setPurchaseAmount(text);
     } else {
       setPurchaseAmount(0);
     }
   }
 
-  // const onChangeTextSell = (text, money) => {
-  //   text = Number(text.replace(/[^0-9]/g, ''));
-  //   if(Number(text) <= money) {
-  //     setPurchaseAmount(text);
-  //   } else {
-  //     setPurchaseAmount(0);
-  //   }
-  // }
-
   if(stockIndex !== 'list') {
-    let maxSliderValue = player.money;
+    let maxInputValue = player.money;
     if(mode === 'sell') {
-      maxSliderValue = stocks[stockIndex].owned * stocks[stockIndex].price;
+      maxInputValue = stocks[stockIndex].owned * stocks[stockIndex].price;
     }
     output = (
     <View style={{ alignItems: 'center' }}>
@@ -164,7 +155,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
           maxLength={40}
           placeholder={"Enter Amount Here"}
           keyboardType='numeric'
-          onChangeText={text => onChangeText(text, player.money)}
+          onChangeText={text => onChangeText(text, maxInputValue)}
         />
       </View>
 

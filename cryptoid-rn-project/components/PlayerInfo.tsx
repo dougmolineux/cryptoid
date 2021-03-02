@@ -43,8 +43,9 @@ let PlayerInfo: React.FC<Props> = ({ player, day, incrementDayDispatch }) => {
           Portfolio Value
           ${player.portfolioValue.toFixed(2)}
         </Text>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Text
-          style={styles.playerInfoText}
+          style={styles.dayText}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
           Day {day}
@@ -95,16 +96,15 @@ const styles = StyleSheet.create({
     lineHeight: 50,
     textAlign: 'center',
   },
-  helpContainer: {
-    marginTop: 15,
-    marginHorizontal: 20,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
+  dayText: {
+    fontSize: 20,
+    lineHeight: 50,
     textAlign: 'center',
+  },
+  separator: {
+    marginVertical: 30,
+    height: 1,
+    width: '80%',
   },
   nextButtonContainer: {
     elevation: 8,
