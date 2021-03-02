@@ -146,22 +146,23 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
         darkColor="rgba(255,255,255,0.8)">        
-        Currently Owned: {stocks[stockIndex].owned.toFixed(2)} coins
+        Currently Owned: {stocks[stockIndex].owned.toFixed(2)} coins 
+        (${ (stocks[stockIndex].owned * stocks[stockIndex].price).toFixed(2) })
       </Text>
 
       <View style={{ flexDirection: 'row' }}>
         <Text
-          style={styles.cryptoText}
+          style={styles.amountText}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">        
-          Purchase Amount:  
+          Amount ($):  
           {/* ${purchaseAmount} */}
         </Text>
         <TextInput
           multiline={false}
           editable
           maxLength={40}
-          placeholder={"Enter amount here"}
+          placeholder={"Enter Amount Here"}
           keyboardType='numeric'
           onChangeText={text => onChangeText(text, player.money)}
         />
@@ -191,7 +192,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
       </View>
 
       <Text
-        style={styles.cryptoText}
+        style={styles.cryptoName}
         lightColor="rgba(0,0,0,0.8)"
         darkColor="rgba(255,255,255,0.8)">        
         {stocks[stockIndex].name}
@@ -254,10 +255,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 50,
   },
+  amountText: {
+    fontSize: 14,
+    lineHeight: 50,
+    textAlign: 'center',
+    padding: 10
+  },
   cryptoText: {
     fontSize: 14,
     lineHeight: 50,
     textAlign: 'center',
+  },
+  cryptoName: {
+    fontSize: 14,
+    lineHeight: 50,
+    textAlign: 'center',
+    fontWeight: 'bold'
   },
   buyButtonContainer: {
     elevation: 8,
