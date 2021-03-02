@@ -42,7 +42,6 @@ export const appStateReducer = (
             const newStockArray = state.stocks.map( (stock) => {
                 let upOrDown = randomInteger(1, 10);
                 let percentChange = stock.price * (randomInteger(1, 20) / 100);
-                console.log("upOrdDown", upOrDown);
                 
                 if(upOrDown > 3) {
                     stock.price = stock.price + percentChange;
@@ -51,19 +50,19 @@ export const appStateReducer = (
                     stock.price = stock.price - percentChange;
                 }
                 playerPortfolioValue = playerPortfolioValue + (stock.price * stock.owned);
-                playerPortfolioValue = playerPortfolioValue;
+                playerPortfolioValue = playerPortfolioValue * 1;
                 return stock;
             });
             
-            console.log('new state', {
-                ...state,
-                player: {
-                    money: state.player.money,
-                    portfolioValue: playerPortfolioValue
-                },
-                day: incrementDay.dayValue,
-                stocks: newStockArray
-            });
+            // console.log('new state', {
+            //     ...state,
+            //     player: {
+            //         money: state.player.money,
+            //         portfolioValue: playerPortfolioValue
+            //     },
+            //     day: incrementDay.dayValue,
+            //     stocks: newStockArray
+            // });
 
             return {
                 ...state,

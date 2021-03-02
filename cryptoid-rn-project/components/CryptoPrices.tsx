@@ -1,6 +1,6 @@
 // import * as WebBrowser from 'expo-web-browser';
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 
 // import Colors from '../constants/Colors';
 // import { MonoText } from './StyledText';
@@ -55,7 +55,6 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
   };
 
   const cancelBuyStock = () => {
-    console.log("confirm buying stock");
     setStockIndex('list');
   };
 
@@ -67,9 +66,9 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
     let lastChanged;
     if(stock.lastChanged) {
       lastChanged = (<Text style={{ flexDirection: 'row' }}> 
-        <Text style={ 
+        {/* <Text style={ 
           stock.lastChanged < 0 ? styles.downTriangle : styles.upTriangle 
-        }></Text>
+        }></Text> */}
         <Text> {stock.lastChanged}%</Text>
       </Text>);
     }
@@ -111,9 +110,23 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
 
   let output;
 
-  const sliderChanged = (val) => {
-    setPurchaseAmount(val);
+  const onChangeText = (text, money) => {
+    text = Number(text.replace(/[^0-9]/g, ''));
+    if(Number(text) <= money) {
+      setPurchaseAmount(text);
+    } else {
+      setPurchaseAmount(0);
+    }
   }
+
+  // const onChangeTextSell = (text, money) => {
+  //   text = Number(text.replace(/[^0-9]/g, ''));
+  //   if(Number(text) <= money) {
+  //     setPurchaseAmount(text);
+  //   } else {
+  //     setPurchaseAmount(0);
+  //   }
+  // }
 
   if(stockIndex !== 'list') {
     let maxSliderValue = player.money;
@@ -122,6 +135,61 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
     }
     output = (
     <View style={{ alignItems: 'center' }}>
+    {/* // <View> */}
+      <Text
+        style={styles.cryptoText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)">        
+        Available Cash: ${player.money.toFixed(2)}
+      </Text>
+      <Text
+        style={styles.cryptoText}
+        lightColor="rgba(0,0,0,0.8)"
+        darkColor="rgba(255,255,255,0.8)">        
+        Currently Owned: {stocks[stockIndex].owned.toFixed(2)} coins
+      </Text>
+
+      <View style={{ flexDirection: 'row' }}>
+        <Text
+          style={styles.cryptoText}
+          lightColor="rgba(0,0,0,0.8)"
+          darkColor="rgba(255,255,255,0.8)">        
+          Purchase Amount:  
+          {/* ${purchaseAmount} */}
+        </Text>
+        <TextInput
+          multiline={false}
+          editable
+          maxLength={40}
+          placeholder={"Enter amount here"}
+          keyboardType='numeric'
+          onChangeText={text => onChangeText(text, player.money)}
+        />
+      </View>
+
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity 
+          style={ purchaseAmount <= 0 ? 
+            styles.disabledBuyButtonContainer :
+            styles.buyButtonContainer }
+          disabled={ purchaseAmount <= 0 }
+          onPress={ () => {
+            if(mode === 'buy') {
+              confirmBuyStock(stocks[stockIndex], stockIndex);
+            } else {
+              confirmSellStock(stocks[stockIndex], stockIndex);
+            }
+          }}>
+          <Text style={styles.appButtonText}
+            >Confirm</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.sellButtonContainer}
+          onPress={ () => cancelBuyStock() }>
+          <Text style={styles.appButtonText}>Cancel</Text>
+        </TouchableOpacity>
+      </View>
+
       <Text
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
@@ -134,50 +202,16 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
         darkColor="rgba(255,255,255,0.8)">        
         Price per Crypto: ${stocks[stockIndex].price}
       </Text>
-      <Text
-        style={styles.cryptoText}
-        lightColor="rgba(0,0,0,0.8)"
-        darkColor="rgba(255,255,255,0.8)">        
-        Available Cash: ${player.money.toFixed(2)}
-      </Text>
-      <Text
-        style={styles.cryptoText}
-        lightColor="rgba(0,0,0,0.8)"
-        darkColor="rgba(255,255,255,0.8)">        
-        Currently Owned: {stocks[stockIndex].owned} coins
-      </Text>
-      <Text
-        style={styles.cryptoText}
-        lightColor="rgba(0,0,0,0.8)"
-        darkColor="rgba(255,255,255,0.8)">        
-        Purchase Amount: ${purchaseAmount}
-      </Text>
-      <Slider
+      
+      {/* <Slider
           style={{width: 200, height: 40}}
           minimumValue={0}
           maximumValue={maxSliderValue}
           minimumTrackTintColor="#ccfffa"
           maximumTrackTintColor="#ffeae6"
           onValueChange={ (val) => sliderChanged(val)}
-        />
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity 
-          style={ styles.buyButtonContainer }
-          onPress={ () => {
-            if(mode === 'buy') {
-              confirmBuyStock(stocks[stockIndex], stockIndex);
-            } else {
-              confirmSellStock(stocks[stockIndex], stockIndex);
-            }
-          }}>
-          <Text style={styles.appButtonText}>Confirm</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.sellButtonContainer}
-          onPress={ () => cancelBuyStock() }>
-          <Text style={styles.appButtonText}>Cancel</Text>
-        </TouchableOpacity>
-      </View>
+        /> */}
+
     </View>
     );
   } else {
@@ -260,32 +294,32 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     textTransform: "uppercase"
   },
-  upTriangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderTopWidth: 0,
-    borderRightWidth: 6,
-    borderBottomWidth: 12,
-    borderLeftWidth: 6,
-    borderTopColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: '#009688',
-    borderLeftColor: 'transparent',
-  },
-  downTriangle: {
-    width: 0,
-    height: 0,
-    backgroundColor: 'transparent',
-    borderStyle: 'solid',
-    borderTopWidth: 12,
-    borderRightWidth: 6,
-    borderBottomWidth: 0,
-    borderLeftWidth: 6,
-    borderTopColor: '#FF9C87',
-    borderRightColor: 'transparent',
-    borderBottomColor: 'transparent',
-    borderLeftColor: 'transparent',
-  }
+  // upTriangle: {
+  //   width: 0,
+  //   height: 0,
+  //   backgroundColor: 'transparent',
+  //   borderStyle: 'solid',
+  //   borderTopWidth: 0,
+  //   borderRightWidth: 6,
+  //   borderBottomWidth: 12,
+  //   borderLeftWidth: 6,
+  //   borderTopColor: 'transparent',
+  //   borderRightColor: 'transparent',
+  //   borderBottomColor: '#009688',
+  //   borderLeftColor: 'transparent',
+  // },
+  // downTriangle: {
+  //   width: 0,
+  //   height: 0,
+  //   backgroundColor: 'transparent',
+  //   borderStyle: 'solid',
+  //   borderTopWidth: 12,
+  //   borderRightWidth: 6,
+  //   borderBottomWidth: 0,
+  //   borderLeftWidth: 6,
+  //   borderTopColor: '#FF9C87',
+  //   borderRightColor: 'transparent',
+  //   borderBottomColor: 'transparent',
+  //   borderLeftColor: 'transparent',
+  // }
 });

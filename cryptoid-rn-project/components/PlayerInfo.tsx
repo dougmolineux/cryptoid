@@ -90,16 +90,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 50,
   },
-  // homeScreenFilename: {
-  //   marginVertical: 7,
-  // },
-  // codeHighlightText: {
-  //   color: 'rgba(96,100,109, 0.8)',
-  // },
-  // codeHighlightContainer: {
-  //   borderRadius: 3,
-  //   paddingHorizontal: 4,
-  // },
   playerInfoText: {
     fontSize: 24,
     lineHeight: 50,
