@@ -140,7 +140,7 @@ let EditScreenInfo: React.FC<Props> = ({ player, stocks, updatePlayerDispatch })
         style={styles.cryptoText}
         lightColor="rgba(0,0,0,0.8)"
         darkColor="rgba(255,255,255,0.8)">        
-        Currently Owned: ${stocks[stockIndex].owned}
+        Currently Owned: {stocks[stockIndex].owned} coins
       </Text>
       <Text
         style={styles.cryptoText}

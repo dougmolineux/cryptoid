@@ -51,7 +51,7 @@ export const appStateReducer = (
                     stock.lastChanged = stock.lastChanged * -1;
                     stock.price = Number((stock.price - percentChange).toFixed(2));
                 }
-                playerPortfolioValue = playerPortfolioValue + (stock.price * stock.owned);
+                playerPortfolioValue = playerPortfolioValue + (stock.price * Number(stock.owned.toFixed(2)));
                 playerPortfolioValue = Number(playerPortfolioValue.toFixed(2));
                 return stock;
             });
@@ -59,8 +59,8 @@ export const appStateReducer = (
             console.log('new state', {
                 ...state,
                 player: {
-                    money: state.player.money,
-                    portfolioValue: playerPortfolioValue
+                    money: Number(state.player.money.toFixed(2)),
+                    portfolioValue: Number(playerPortfolioValue.toFixed(2))
                 },
                 day: incrementDay.dayValue,
                 stocks: newStockArray
@@ -69,8 +69,8 @@ export const appStateReducer = (
             return {
                 ...state,
                 player: {
-                    money: state.player.money,
-                    portfolioValue: playerPortfolioValue
+                    money: Number(state.player.money.toFixed(2)),
+                    portfolioValue: Number(playerPortfolioValue.toFixed(2))
                 },
                 day: incrementDay.dayValue,
                 stocks: newStockArray
@@ -82,6 +82,9 @@ export const appStateReducer = (
             console.log("updatePlayerAction", updatePlayerAction);
 
             // if we are selling, then we need to minus this
+            // the purchase amount is actually going to be negative
+            // if we are selling, so no changes here are required
+
             state.stocks[updatePlayerAction.stockIndex].owned = 
                 state.stocks[updatePlayerAction.stockIndex].owned + updatePlayerAction.purchaseAmount;
 
